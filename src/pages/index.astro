@@ -1,0 +1,159 @@
+---
+const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
+---
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Homeserver</title>
+		<style>
+			:root {
+				--bg-color: #121212;
+				--card-bg: #1a1a1a;
+				--text-main: #f0f0f0;
+				--text-muted: #888888;
+				--border-color: #2a2a2a;
+				--accent-online: #22c55e;
+			}
+			body {
+				background-color: var(--bg-color);
+				color: var(--text-main);
+				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+				margin: 0;
+				padding: 60px 20px;
+				display: flex;
+				justify-content: center;
+			}
+			.container {
+				max-width: 800px;
+				width: 100%;
+			}
+			h1 {
+				font-size: 1.5rem;
+				font-weight: 600;
+				margin-bottom: 2rem;
+				letter-spacing: -0.02em;
+			}
+			.section-title {
+				font-size: 0.75rem;
+				text-transform: uppercase;
+				letter-spacing: 0.1em;
+				color: var(--text-muted);
+				margin-bottom: 1rem;
+				margin-top: 2.5rem;
+			}
+			.grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+				gap: 16px;
+			}
+			.card {
+				background-color: var(--card-bg);
+				border: 1px solid var(--border-color);
+				border-radius: 6px;
+				padding: 20px;
+				text-decoration: none;
+				color: inherit;
+				display: flex;
+				flex-direction: column;
+				transition: border-color 0.2s ease;
+			}
+			.card:hover {
+				border-color: #555;
+			}
+			.card-header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 6px;
+			}
+			.card-title {
+				font-size: 0.95rem;
+				font-weight: 500;
+				margin: 0;
+			}
+			.status-dot {
+				width: 8px;
+				height: 8px;
+				background-color: var(--accent-online);
+				border-radius: 50%;
+				/* No glowing shadow, keeping it super flat and simple */
+			}
+			.card-desc {
+				font-size: 0.85rem;
+				color: var(--text-muted);
+				margin: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>homeserver.</h1>
+
+			<div class="section-title">Public Apps</div>
+			<div class="grid">
+				<a href={`https://${baseDomain}/the-wine-corner`} class="card" target="_blank">
+					<div class="card-header">
+						<h2 class="card-title">The Wine Corner</h2>
+						<div class="status-dot"></div>
+					</div>
+					<p class="card-desc">AI product desc & sommelier notes</p>
+				</a>
+				<a href={`https://${baseDomain}/your-places`} class="card" target="_blank">
+					<div class="card-header">
+						<h2 class="card-title">Your Places</h2>
+						<div class="status-dot"></div>
+					</div>
+					<p class="card-desc">Location tracking and maps</p>
+				</a>
+			</div>
+
+			<div class="section-title">Internal Tools</div>
+			<div class="grid">
+				<a href={`https://dashboard.${baseDomain}`} class="card" target="_blank">
+					<div class="card-header">
+						<h2 class="card-title">GoAccess</h2>
+						<div class="status-dot"></div>
+					</div>
+					<p class="card-desc">NGINX Server Analytics</p>
+				</a>
+				<a href={`https://mongodb.${baseDomain}`} class="card" target="_blank">
+					<div class="card-header">
+						<h2 class="card-title">MongoDB Express</h2>
+						<div class="status-dot"></div>
+					</div>
+					<p class="card-desc">MongoDB Web GUI</p>
+				</a>
+				<a href={`https://openinary.${baseDomain}`} class="card" target="_blank">
+					<div class="card-header">
+						<h2 class="card-title">Openinary</h2>
+						<div class="status-dot"></div>
+					</div>
+					<p class="card-desc">Image Manager</p>
+				</a>
+				<a href={`https://database.${baseDomain}`} class="card" target="_blank">
+					<div class="card-header">
+						<h2 class="card-title">phpMyAdmin</h2>
+						<div class="status-dot"></div>
+					</div>
+					<p class="card-desc">MySQL Database Admin</p>
+				</a>
+				<a href={`https://portainer.${baseDomain}`} class="card" target="_blank">
+					<div class="card-header">
+						<h2 class="card-title">Portainer</h2>
+						<div class="status-dot"></div>
+					</div>
+					<p class="card-desc">Docker Container Management</p>
+				</a>
+				<a href={`https://status.${baseDomain}`} class="card" target="_blank">
+					<div class="card-header">
+						<h2 class="card-title">Uptime Kuma</h2>
+						<div class="status-dot"></div>
+					</div>
+					<p class="card-desc">Service monitoring and health</p>
+				</a>
+			</div>
+		</div>
+	</body>
+</html>
