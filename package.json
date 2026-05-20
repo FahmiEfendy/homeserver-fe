@@ -1,5 +1,5 @@
 {
-  "name": "dashboard",
+  "name": "homeserver-fe",
   "type": "module",
   "version": "0.0.1",
   "engines": {

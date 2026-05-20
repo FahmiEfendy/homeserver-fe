@@ -6,7 +6,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Homeserver</title>
+		<title>fahmi homeserver.</title>
 		<style>
 			:root {
 				--bg-color: #121212;
@@ -85,75 +85,331 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				color: var(--text-muted);
 				margin: 0;
 			}
+			
+			.vitals-bar {
+				display: flex;
+				gap: 20px;
+				margin-bottom: 2rem;
+				margin-top: -10px;
+				font-size: 0.85rem;
+				color: var(--text-muted);
+				background-color: var(--card-bg);
+				padding: 12px 16px;
+				border-radius: 6px;
+				border: 1px solid var(--border-color);
+				flex-wrap: wrap;
+			}
+			.vital span {
+				color: var(--text-main);
+				font-family: monospace;
+				font-size: 0.9rem;
+				font-weight: 500;
+			}
+			
+			.toggle-container {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				margin-bottom: 2rem;
+				font-size: 0.85rem;
+				color: var(--text-muted);
+			}
+			.toggle-switch {
+				position: relative;
+				display: inline-block;
+				width: 40px;
+				height: 20px;
+			}
+			.toggle-switch input {
+				opacity: 0;
+				width: 0;
+				height: 0;
+			}
+			.slider {
+				position: absolute;
+				cursor: pointer;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: var(--border-color);
+				transition: .2s;
+				border-radius: 20px;
+			}
+			.slider:before {
+				position: absolute;
+				content: "";
+				height: 14px;
+				width: 14px;
+				left: 3px;
+				bottom: 3px;
+				background-color: var(--text-muted);
+				transition: .2s;
+				border-radius: 50%;
+			}
+			input:checked + .slider {
+				background-color: var(--accent-online);
+			}
+			input:checked + .slider:before {
+				transform: translateX(20px);
+				background-color: #fff;
+			}
+			
+			.card-stats {
+				max-height: 0;
+				opacity: 0;
+				overflow: hidden;
+				transition: max-height 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease, padding-top 0.3s ease;
+				margin-top: 0;
+				padding-top: 0;
+				border-top: 1px solid transparent;
+				font-size: 0.8rem;
+				color: var(--text-muted);
+				font-family: monospace;
+				display: flex;
+				justify-content: space-between;
+				text-align: center;
+			}
+			.card-stats.visible {
+				max-height: 60px;
+				opacity: 1;
+				margin-top: 15px;
+				padding-top: 15px;
+				border-top-color: var(--border-color);
+			}
+			.card-stats-col {
+				display: flex;
+				flex-direction: column;
+				gap: 4px;
+			}
+			.card-stats-label {
+				font-size: 0.65rem;
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+				opacity: 0.7;
+			}
+			.card-stats-val {
+				color: var(--text-main);
+			}
+			/* Mobile Responsiveness */
+			@media (max-width: 600px) {
+				body {
+					padding: 30px 16px;
+				}
+				.grid {
+					grid-template-columns: 1fr;
+					gap: 12px;
+				}
+				h1 {
+					font-size: 1.3rem;
+					margin-bottom: 1.5rem;
+				}
+				.section-title {
+					margin-top: 2rem;
+				}
+			}
 		</style>
 	</head>
 	<body>
 		<div class="container">
-			<h1>homeserver.</h1>
+			<h1>fahmi homeserver.</h1>
+
+			<div class="vitals-bar" id="vitals-bar">
+				<div class="vital">CPU: <span id="cpu-load">...</span>%</div>
+				<div class="vital">RAM: <span id="ram-used">...</span> / <span id="ram-total">...</span> GB</div>
+				<div class="vital">DISK: <span id="disk-usage">...</span></div>
+				<div class="vital">TEMP: <span id="temp">...</span></div>
+			</div>
+			
+			<div class="toggle-container">
+				<label class="toggle-switch">
+					<input type="checkbox" id="stats-toggle">
+					<span class="slider"></span>
+				</label>
+				<span>Show Container Stats</span>
+			</div>
 
 			<div class="section-title">Public Apps</div>
 			<div class="grid">
-				<a href={`https://${baseDomain}/the-wine-corner`} class="card" target="_blank">
+				<a href={`https://${baseDomain}/the-wine-corner`} class="card" target="_blank" data-container="the-wine-corner">
 					<div class="card-header">
 						<h2 class="card-title">The Wine Corner</h2>
 						<div class="status-dot"></div>
 					</div>
-					<p class="card-desc">AI product desc & sommelier notes</p>
+					<p class="card-desc">Your personal AI sommelier and wine catalog</p>
+					<div class="card-stats">
+						<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+						<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+						<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
+						<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+					</div>
 				</a>
-				<a href={`https://${baseDomain}/your-places`} class="card" target="_blank">
+				<a href={`https://${baseDomain}/your-places`} class="card" target="_blank" data-container="your-places">
 					<div class="card-header">
 						<h2 class="card-title">Your Places</h2>
 						<div class="status-dot"></div>
 					</div>
 					<p class="card-desc">Location tracking and maps</p>
+					<div class="card-stats">
+						<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+						<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+						<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
+						<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+					</div>
 				</a>
 			</div>
 
 			<div class="section-title">Internal Tools</div>
 			<div class="grid">
-				<a href={`https://dashboard.${baseDomain}`} class="card" target="_blank">
+				<a href={`https://dashboard.${baseDomain}`} class="card" target="_blank" data-container="goaccess">
 					<div class="card-header">
 						<h2 class="card-title">GoAccess</h2>
 						<div class="status-dot"></div>
 					</div>
 					<p class="card-desc">NGINX Server Analytics</p>
+					<div class="card-stats">
+						<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+						<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+						<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
+						<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+					</div>
 				</a>
-				<a href={`https://mongodb.${baseDomain}`} class="card" target="_blank">
+				<a href={`https://mongodb.${baseDomain}`} class="card" target="_blank" data-container="mongo-express">
 					<div class="card-header">
 						<h2 class="card-title">MongoDB Express</h2>
 						<div class="status-dot"></div>
 					</div>
 					<p class="card-desc">MongoDB Web GUI</p>
+					<div class="card-stats">
+						<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+						<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+						<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
+						<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+					</div>
 				</a>
-				<a href={`https://openinary.${baseDomain}`} class="card" target="_blank">
+				<a href={`https://openinary.${baseDomain}`} class="card" target="_blank" data-container="openinary">
 					<div class="card-header">
 						<h2 class="card-title">Openinary</h2>
 						<div class="status-dot"></div>
 					</div>
 					<p class="card-desc">Image Manager</p>
+					<div class="card-stats">
+						<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+						<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+						<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
+						<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+					</div>
 				</a>
-				<a href={`https://database.${baseDomain}`} class="card" target="_blank">
+				<a href={`https://database.${baseDomain}`} class="card" target="_blank" data-container="phpmyadmin">
 					<div class="card-header">
 						<h2 class="card-title">phpMyAdmin</h2>
 						<div class="status-dot"></div>
 					</div>
 					<p class="card-desc">MySQL Database Admin</p>
+					<div class="card-stats">
+						<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+						<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+						<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
+					</div>
 				</a>
-				<a href={`https://portainer.${baseDomain}`} class="card" target="_blank">
+				<a href={`https://portainer.${baseDomain}`} class="card" target="_blank" data-container="portainer">
 					<div class="card-header">
 						<h2 class="card-title">Portainer</h2>
 						<div class="status-dot"></div>
 					</div>
 					<p class="card-desc">Docker Container Management</p>
+					<div class="card-stats">
+						<div class="card-stats-row"><span class="card-stats-label">CPU</span> <span class="stat-cpu">--%</span></div>
+						<div class="card-stats-row"><span class="card-stats-label">MEM</span> <span class="stat-mem">--</span></div>
+						<div class="card-stats-row"><span class="card-stats-label">MEM%</span> <span class="stat-mem-perc">--%</span></div>
+					</div>
 				</a>
-				<a href={`https://status.${baseDomain}`} class="card" target="_blank">
+				<a href={`https://status.${baseDomain}`} class="card" target="_blank" data-container="uptime-kuma">
 					<div class="card-header">
 						<h2 class="card-title">Uptime Kuma</h2>
 						<div class="status-dot"></div>
 					</div>
 					<p class="card-desc">Service monitoring and health</p>
+					<div class="card-stats">
+						<div class="card-stats-row"><span class="card-stats-label">CPU</span> <span class="stat-cpu">--%</span></div>
+						<div class="card-stats-row"><span class="card-stats-label">MEM</span> <span class="stat-mem">--</span></div>
+						<div class="card-stats-row"><span class="card-stats-label">MEM%</span> <span class="stat-mem-perc">--%</span></div>
+					</div>
 				</a>
 			</div>
 		</div>
+
+		<script>
+			async function fetchVitals() {
+				try {
+					// Use prod backend for local dev, or relative path if deployed behind NGINX
+					const apiUrl = window.location.hostname === 'localhost' 
+						? 'https://fahmiefendy.dev/api/vitals' 
+						: '/api/vitals';
+					
+					const res = await fetch(apiUrl);
+					const data = await res.json();
+					
+					document.getElementById('cpu-load').textContent = data.cpuLoad;
+					document.getElementById('ram-used').textContent = data.ramUsed;
+					document.getElementById('ram-total').textContent = data.ramTotal;
+					document.getElementById('disk-usage').textContent = data.disk;
+					document.getElementById('temp').textContent = data.temp;
+				} catch (err) {
+					console.error('Failed to fetch vitals', err);
+				}
+			}
+			
+			async function fetchDockerStats() {
+				try {
+					const apiUrl = window.location.hostname === 'localhost' 
+						? 'https://fahmiefendy.dev/api/docker' 
+						: '/api/docker';
+					
+					const res = await fetch(apiUrl);
+					const data = await res.json();
+					
+					if (data.error || data.length === 0) return;
+					
+					// Map stats to corresponding cards
+					const cards = document.querySelectorAll('.card[data-container]');
+					cards.forEach(card => {
+						const containerMatch = card.getAttribute('data-container');
+						// Find a matching docker container (fuzzy match by name substring)
+						const stat = data.find(s => s.Name.toLowerCase().includes(containerMatch.toLowerCase()));
+						
+						if (stat) {
+							card.querySelector('.stat-cpu').textContent = stat.CPUPerc;
+							card.querySelector('.stat-mem').textContent = stat.MemUsage;
+							card.querySelector('.stat-mem-perc').textContent = stat.MemPerc;
+							card.querySelector('.stat-uptime').textContent = stat.Status;
+						}
+					});
+				} catch (err) {
+					console.error('Failed to fetch docker stats', err);
+				}
+			}
+			
+			// Handle Toggle
+			const toggle = document.getElementById('stats-toggle');
+			toggle.addEventListener('change', (e) => {
+				const statsBlocks = document.querySelectorAll('.card-stats');
+				statsBlocks.forEach(block => {
+					if (e.target.checked) {
+						block.classList.add('visible');
+					} else {
+						block.classList.remove('visible');
+					}
+				});
+			});
+			
+			// Fetch immediately and then every 5 seconds
+			fetchVitals();
+			fetchDockerStats();
+			setInterval(() => {
+				fetchVitals();
+				fetchDockerStats();
+			}, 5000);
+		</script>
 	</body>
 </html>
