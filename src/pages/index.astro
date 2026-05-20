@@ -73,12 +73,26 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				font-weight: 500;
 				margin: 0;
 			}
+			.status-dots {
+				display: flex;
+				gap: 8px;
+			}
+			.dot-wrapper {
+				display: flex;
+				align-items: center;
+				gap: 4px;
+			}
+			.dot-label {
+				font-size: 0.65rem;
+				color: var(--text-muted);
+				font-family: monospace;
+			}
 			.status-dot {
 				width: 8px;
 				height: 8px;
-				background-color: var(--accent-online);
+				background-color: #444; /* Default offline/unknown gray */
 				border-radius: 50%;
-				/* No glowing shadow, keeping it super flat and simple */
+				transition: background-color 0.3s ease;
 			}
 			.card-desc {
 				font-size: 0.85rem;
@@ -240,7 +254,16 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				<a href={`https://${baseDomain}/the-wine-corner`} class="card" target="_blank">
 					<div class="card-header">
 						<h2 class="card-title">The Wine Corner</h2>
-						<div class="status-dot"></div>
+						<div class="status-dots">
+							<div class="dot-wrapper">
+								<span class="dot-label">FE</span>
+								<div class="status-dot" data-dot-for="twc-fe"></div>
+							</div>
+							<div class="dot-wrapper">
+								<span class="dot-label">BE</span>
+								<div class="status-dot" data-dot-for="twc-be"></div>
+							</div>
+						</div>
 					</div>
 					<p class="card-desc">Your personal AI sommelier and wine catalog</p>
 					<div class="card-stats">
@@ -261,7 +284,16 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				<a href={`https://${baseDomain}/your-places`} class="card" target="_blank">
 					<div class="card-header">
 						<h2 class="card-title">Your Places</h2>
-						<div class="status-dot"></div>
+						<div class="status-dots">
+							<div class="dot-wrapper">
+								<span class="dot-label">FE</span>
+								<div class="status-dot" data-dot-for="yp-fe"></div>
+							</div>
+							<div class="dot-wrapper">
+								<span class="dot-label">BE</span>
+								<div class="status-dot" data-dot-for="yp-be"></div>
+							</div>
+						</div>
 					</div>
 					<p class="card-desc">Location tracking and maps</p>
 					<div class="card-stats">
@@ -286,7 +318,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				<a href={`https://dashboard.${baseDomain}`} class="card" target="_blank" data-container="main-nginx">
 					<div class="card-header">
 						<h2 class="card-title">GoAccess</h2>
-						<div class="status-dot"></div>
+						<div class="status-dot" data-dot-for="main-nginx"></div>
 					</div>
 					<p class="card-desc">NGINX Server Analytics</p>
 					<div class="card-stats">
@@ -301,7 +333,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				<a href={`https://mongodb.${baseDomain}`} class="card" target="_blank" data-container="mongo-express">
 					<div class="card-header">
 						<h2 class="card-title">MongoDB Express</h2>
-						<div class="status-dot"></div>
+						<div class="status-dot" data-dot-for="mongo-express"></div>
 					</div>
 					<p class="card-desc">MongoDB Web GUI</p>
 					<div class="card-stats">
@@ -316,7 +348,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				<a href={`https://openinary.${baseDomain}`} class="card" target="_blank" data-container="openinary">
 					<div class="card-header">
 						<h2 class="card-title">Openinary</h2>
-						<div class="status-dot"></div>
+						<div class="status-dot" data-dot-for="openinary"></div>
 					</div>
 					<p class="card-desc">Image Manager</p>
 					<div class="card-stats">
@@ -331,7 +363,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				<a href={`https://database.${baseDomain}`} class="card" target="_blank" data-container="phpmyadmin">
 					<div class="card-header">
 						<h2 class="card-title">phpMyAdmin</h2>
-						<div class="status-dot"></div>
+						<div class="status-dot" data-dot-for="phpmyadmin"></div>
 					</div>
 					<p class="card-desc">MySQL Database Admin</p>
 					<div class="card-stats">
@@ -346,7 +378,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				<a href={`https://portainer.${baseDomain}`} class="card" target="_blank" data-container="portainer">
 					<div class="card-header">
 						<h2 class="card-title">Portainer</h2>
-						<div class="status-dot"></div>
+						<div class="status-dot" data-dot-for="portainer"></div>
 					</div>
 					<p class="card-desc">Docker Container Management</p>
 					<div class="card-stats">
@@ -361,7 +393,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				<a href={`https://status.${baseDomain}`} class="card" target="_blank" data-container="uptime-kuma">
 					<div class="card-header">
 						<h2 class="card-title">Uptime Kuma</h2>
-						<div class="status-dot"></div>
+						<div class="status-dot" data-dot-for="uptime-kuma"></div>
 					</div>
 					<p class="card-desc">Service monitoring and health</p>
 					<div class="card-stats" data-container="uptime-kuma">
@@ -420,6 +452,18 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 							if(node.querySelector('.stat-mem')) node.querySelector('.stat-mem').textContent = stat.MemUsage.split(' / ')[0];
 							if(node.querySelector('.stat-mem-perc')) node.querySelector('.stat-mem-perc').textContent = stat.MemPerc;
 							if(node.querySelector('.stat-uptime')) node.querySelector('.stat-uptime').textContent = stat.Status;
+						}
+					});
+					
+					// Update dynamic health dots
+					const dots = document.querySelectorAll('.status-dot[data-dot-for]');
+					dots.forEach(dot => {
+						const containerMatch = dot.getAttribute('data-dot-for');
+						const stat = data.find(s => s.Name.toLowerCase().includes(containerMatch.toLowerCase()));
+						if (stat && stat.Status.startsWith('Up')) {
+							dot.style.backgroundColor = 'var(--accent-online)';
+						} else {
+							dot.style.backgroundColor = '#ef4444';
 						}
 					});
 				} catch (err) {
