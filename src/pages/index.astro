@@ -167,15 +167,21 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				color: var(--text-muted);
 				font-family: monospace;
 				display: flex;
-				justify-content: space-between;
-				text-align: center;
+				flex-direction: column;
+				gap: 10px;
 			}
 			.card-stats.visible {
-				max-height: 60px;
+				max-height: 150px;
 				opacity: 1;
 				margin-top: 15px;
 				padding-top: 15px;
 				border-top-color: var(--border-color);
+			}
+			.stats-row {
+				display: flex;
+				justify-content: space-between;
+				text-align: center;
+				width: 100%;
 			}
 			.card-stats-col {
 				display: flex;
@@ -231,47 +237,65 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 
 			<div class="section-title">Public Apps</div>
 			<div class="grid">
-				<a href={`https://${baseDomain}/the-wine-corner`} class="card" target="_blank" data-container="the-wine-corner">
+				<a href={`https://${baseDomain}/the-wine-corner`} class="card" target="_blank">
 					<div class="card-header">
 						<h2 class="card-title">The Wine Corner</h2>
 						<div class="status-dot"></div>
 					</div>
 					<p class="card-desc">Your personal AI sommelier and wine catalog</p>
 					<div class="card-stats">
-						<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
-						<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-						<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-						<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						<div class="stats-row" data-container="twc-fe">
+							<div class="card-stats-col"><span class="card-stats-label">FE CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
+							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						</div>
+						<div class="stats-row" data-container="twc-be">
+							<div class="card-stats-col"><span class="card-stats-label">BE CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
+							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						</div>
 					</div>
 				</a>
-				<a href={`https://${baseDomain}/your-places`} class="card" target="_blank" data-container="your-places">
+				<a href={`https://${baseDomain}/your-places`} class="card" target="_blank">
 					<div class="card-header">
 						<h2 class="card-title">Your Places</h2>
 						<div class="status-dot"></div>
 					</div>
 					<p class="card-desc">Location tracking and maps</p>
 					<div class="card-stats">
-						<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
-						<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-						<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-						<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						<div class="stats-row" data-container="yp-fe">
+							<div class="card-stats-col"><span class="card-stats-label">FE CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
+							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						</div>
+						<div class="stats-row" data-container="yp-be">
+							<div class="card-stats-col"><span class="card-stats-label">BE CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
+							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						</div>
 					</div>
 				</a>
 			</div>
 
 			<div class="section-title">Internal Tools</div>
 			<div class="grid">
-				<a href={`https://dashboard.${baseDomain}`} class="card" target="_blank" data-container="goaccess">
+				<a href={`https://dashboard.${baseDomain}`} class="card" target="_blank" data-container="main-nginx">
 					<div class="card-header">
 						<h2 class="card-title">GoAccess</h2>
 						<div class="status-dot"></div>
 					</div>
 					<p class="card-desc">NGINX Server Analytics</p>
 					<div class="card-stats">
-						<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
-						<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-						<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-						<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						<div class="stats-row">
+							<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
+							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						</div>
 					</div>
 				</a>
 				<a href={`https://mongodb.${baseDomain}`} class="card" target="_blank" data-container="mongo-express">
@@ -281,10 +305,12 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					</div>
 					<p class="card-desc">MongoDB Web GUI</p>
 					<div class="card-stats">
-						<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
-						<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-						<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-						<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						<div class="stats-row">
+							<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
+							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						</div>
 					</div>
 				</a>
 				<a href={`https://openinary.${baseDomain}`} class="card" target="_blank" data-container="openinary">
@@ -294,10 +320,12 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					</div>
 					<p class="card-desc">Image Manager</p>
 					<div class="card-stats">
-						<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
-						<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-						<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-						<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						<div class="stats-row">
+							<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
+							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						</div>
 					</div>
 				</a>
 				<a href={`https://database.${baseDomain}`} class="card" target="_blank" data-container="phpmyadmin">
@@ -307,10 +335,12 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					</div>
 					<p class="card-desc">MySQL Database Admin</p>
 					<div class="card-stats">
-						<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
-						<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-						<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-						<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						<div class="stats-row">
+							<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
+							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						</div>
 					</div>
 				</a>
 				<a href={`https://portainer.${baseDomain}`} class="card" target="_blank" data-container="portainer">
@@ -320,10 +350,12 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					</div>
 					<p class="card-desc">Docker Container Management</p>
 					<div class="card-stats">
-						<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
-						<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-						<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-						<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						<div class="stats-row">
+							<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
+							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						</div>
 					</div>
 				</a>
 				<a href={`https://status.${baseDomain}`} class="card" target="_blank" data-container="uptime-kuma">
@@ -332,11 +364,13 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						<div class="status-dot"></div>
 					</div>
 					<p class="card-desc">Service monitoring and health</p>
-					<div class="card-stats">
-						<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
-						<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-						<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-						<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+					<div class="card-stats" data-container="uptime-kuma">
+						<div class="stats-row">
+							<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
+							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						</div>
 					</div>
 				</a>
 			</div>
@@ -374,18 +408,18 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					
 					if (data.error || data.length === 0) return;
 					
-					// Map stats to corresponding cards
-					const cards = document.querySelectorAll('.card[data-container]');
-					cards.forEach(card => {
-						const containerMatch = card.getAttribute('data-container');
+					// Map stats to corresponding nodes
+					const statNodes = document.querySelectorAll('[data-container]');
+					statNodes.forEach(node => {
+						const containerMatch = node.getAttribute('data-container');
 						// Find a matching docker container (fuzzy match by name substring)
 						const stat = data.find(s => s.Name.toLowerCase().includes(containerMatch.toLowerCase()));
 						
 						if (stat) {
-							card.querySelector('.stat-cpu').textContent = stat.CPUPerc;
-							card.querySelector('.stat-mem').textContent = stat.MemUsage;
-							card.querySelector('.stat-mem-perc').textContent = stat.MemPerc;
-							card.querySelector('.stat-uptime').textContent = stat.Status;
+							if(node.querySelector('.stat-cpu')) node.querySelector('.stat-cpu').textContent = stat.CPUPerc;
+							if(node.querySelector('.stat-mem')) node.querySelector('.stat-mem').textContent = stat.MemUsage.split(' / ')[0];
+							if(node.querySelector('.stat-mem-perc')) node.querySelector('.stat-mem-perc').textContent = stat.MemPerc;
+							if(node.querySelector('.stat-uptime')) node.querySelector('.stat-uptime').textContent = stat.Status;
 						}
 					});
 				} catch (err) {
