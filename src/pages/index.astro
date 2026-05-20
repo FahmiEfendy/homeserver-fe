@@ -310,6 +310,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
 						<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
 						<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
+						<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 					</div>
 				</a>
 				<a href={`https://portainer.${baseDomain}`} class="card" target="_blank" data-container="portainer">
@@ -319,9 +320,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					</div>
 					<p class="card-desc">Docker Container Management</p>
 					<div class="card-stats">
-						<div class="card-stats-row"><span class="card-stats-label">CPU</span> <span class="stat-cpu">--%</span></div>
-						<div class="card-stats-row"><span class="card-stats-label">MEM</span> <span class="stat-mem">--</span></div>
-						<div class="card-stats-row"><span class="card-stats-label">MEM%</span> <span class="stat-mem-perc">--%</span></div>
+						<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+						<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+						<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
+						<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 					</div>
 				</a>
 				<a href={`https://status.${baseDomain}`} class="card" target="_blank" data-container="uptime-kuma">
@@ -331,9 +333,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					</div>
 					<p class="card-desc">Service monitoring and health</p>
 					<div class="card-stats">
-						<div class="card-stats-row"><span class="card-stats-label">CPU</span> <span class="stat-cpu">--%</span></div>
-						<div class="card-stats-row"><span class="card-stats-label">MEM</span> <span class="stat-mem">--</span></div>
-						<div class="card-stats-row"><span class="card-stats-label">MEM%</span> <span class="stat-mem-perc">--%</span></div>
+						<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+						<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+						<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
+						<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 					</div>
 				</a>
 			</div>
