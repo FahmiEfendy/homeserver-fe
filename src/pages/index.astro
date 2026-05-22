@@ -413,7 +413,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				try {
 					const apiUrl = window.location.hostname === 'localhost' 
 						? 'http://localhost:3002/vitals' 
-						: 'https://api-dashboard.fahmiefendy.dev/vitals';
+						: (import.meta.env.PUBLIC_API_BASE_URL + '/vitals');
 					
 					const res = await fetch(apiUrl);
 					const data = await res.json();
@@ -432,7 +432,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				try {
 					const apiUrl = window.location.hostname === 'localhost' 
 						? 'http://localhost:3002/docker' 
-						: 'https://api-dashboard.fahmiefendy.dev/docker';
+						: (import.meta.env.PUBLIC_API_BASE_URL + '/docker');
 					
 					const res = await fetch(apiUrl);
 					const data = await res.json();

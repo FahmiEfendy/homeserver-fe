@@ -40,4 +40,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            BASE_DOMAIN=fahmiefendy.dev
+            BASE_DOMAIN=${{ vars.BASE_DOMAIN }}
+            PUBLIC_API_BASE_URL=${{ vars.PUBLIC_API_BASE_URL }}
