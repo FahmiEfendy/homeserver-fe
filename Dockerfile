@@ -15,6 +15,8 @@ COPY . .
 RUN npm run build
 
 FROM nginx:alpine
+ARG GIT_BRANCH=unknown
+LABEL org.opencontainers.image.ref.name=${GIT_BRANCH}
 # Copy the static built files from Astro to NGINX html folder
 COPY --from=builder /app/dist /usr/share/nginx/html
 EXPOSE 80

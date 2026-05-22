@@ -84,17 +84,24 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 			}
 			.status-dots {
 				display: flex;
-				gap: 8px;
+				gap: 12px;
+				align-items: center;
+				flex-shrink: 0;
 			}
 			.dot-wrapper {
 				display: flex;
 				align-items: center;
-				gap: 4px;
+				gap: 6px;
+				flex-shrink: 0;
 			}
 			.dot-label {
 				font-size: 0.65rem;
 				color: var(--text-muted);
 				font-family: monospace;
+				display: inline-flex;
+				align-items: center;
+				gap: 2px;
+				white-space: nowrap;
 			}
 			.status-dot {
 				width: 8px;
@@ -334,6 +341,11 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				.section-title {
 					margin-top: 2rem;
 				}
+				.card-header {
+					flex-direction: column;
+					align-items: flex-start;
+					gap: 6px;
+				}
 			}
 		</style>
 	</head>
@@ -385,11 +397,11 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						<h2 class="card-title">Homeserver Dashboard</h2>
 						<div class="status-dots">
 							<div class="dot-wrapper">
-								<span class="dot-label">FE</span>
+								<span class="dot-label" data-branch-for="fe-homeserver" data-base-label="FE">FE</span>
 								<div class="status-dot" data-dot-for="fe-homeserver"></div>
 							</div>
 							<div class="dot-wrapper">
-								<span class="dot-label">BE</span>
+								<span class="dot-label" data-branch-for="be-homeserver" data-base-label="BE">BE</span>
 								<div class="status-dot" data-dot-for="be-homeserver"></div>
 							</div>
 						</div>
@@ -415,11 +427,11 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						<h2 class="card-title">The Wine Corner</h2>
 						<div class="status-dots">
 							<div class="dot-wrapper">
-								<span class="dot-label">FE</span>
+								<span class="dot-label" data-branch-for="twc-fe" data-base-label="FE">FE</span>
 								<div class="status-dot" data-dot-for="twc-fe"></div>
 							</div>
 							<div class="dot-wrapper">
-								<span class="dot-label">BE</span>
+								<span class="dot-label" data-branch-for="twc-be" data-base-label="BE">BE</span>
 								<div class="status-dot" data-dot-for="twc-be"></div>
 							</div>
 						</div>
@@ -445,11 +457,11 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						<h2 class="card-title">Your Places</h2>
 						<div class="status-dots">
 							<div class="dot-wrapper">
-								<span class="dot-label">FE</span>
+								<span class="dot-label" data-branch-for="yp-fe" data-base-label="FE">FE</span>
 								<div class="status-dot" data-dot-for="yp-fe"></div>
 							</div>
 							<div class="dot-wrapper">
-								<span class="dot-label">BE</span>
+								<span class="dot-label" data-branch-for="yp-be" data-base-label="BE">BE</span>
 								<div class="status-dot" data-dot-for="yp-be"></div>
 							</div>
 						</div>
@@ -790,6 +802,21 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 							dot.style.backgroundColor = 'var(--accent-online)';
 						} else {
 							dot.style.backgroundColor = '#ef4444';
+						}
+					});
+
+					// Update branch labels
+					const branchLabels = document.querySelectorAll('.dot-label[data-branch-for]');
+					branchLabels.forEach(label => {
+						const containerMatch = label.getAttribute('data-branch-for');
+						const baseText = label.getAttribute('data-base-label') || 'APP';
+						const stat = data.find(s => s.Name.toLowerCase() === containerMatch.toLowerCase())
+							|| data.find(s => s.Name.toLowerCase().includes(containerMatch.toLowerCase()));
+						if (stat && stat.Branch) {
+							const branchIconSvg = `<svg viewBox="0 0 16 16" width="10" height="10" fill="currentColor" style="display: inline-block; vertical-align: middle; margin-right: 2px; margin-left: 2px; margin-top: -1px;"><path d="M5 3.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm0 2.122a2.25 2.25 0 1 0-1.5 0v5.256a2.251 2.251 0 1 0 1.5 0V5.372Zm8 5.378a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm0-2.122a2.25 2.25 0 1 0-1.5 0v-.878A2.25 2.25 0 0 0 9.25 5.5h-2.75v1.5H9.25a.75.75 0 0 1 .75.75v.878Zm-9 4.122a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"></path></svg>`;
+							label.innerHTML = `${baseText} (${branchIconSvg}${stat.Branch})`;
+						} else {
+							label.textContent = baseText;
 						}
 					});
 				} catch (err) {

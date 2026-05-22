@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - test/branching
 
 jobs:
   build-and-push:
@@ -42,3 +43,4 @@ jobs:
           build-args: |
             BASE_DOMAIN=${{ vars.BASE_DOMAIN }}
             PUBLIC_API_BASE_URL=${{ vars.PUBLIC_API_BASE_URL }}
+            GIT_BRANCH=${{ github.ref_name }}
