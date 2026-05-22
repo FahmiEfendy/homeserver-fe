@@ -251,7 +251,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 
 			<div class="section-title">Public Apps</div>
 			<div class="grid">
-				<a href={`https://${baseDomain}/the-wine-corner`} class="card" target="_blank">
+				<a href={`https://wine.${baseDomain}/`} class="card" target="_blank">
 					<div class="card-header">
 						<h2 class="card-title">The Wine Corner</h2>
 						<div class="status-dots">
@@ -281,7 +281,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						</div>
 					</div>
 				</a>
-				<a href={`https://${baseDomain}/your-places`} class="card" target="_blank">
+				<a href={`https://places.${baseDomain}`} class="card" target="_blank">
 					<div class="card-header">
 						<h2 class="card-title">Your Places</h2>
 						<div class="status-dots">
@@ -315,7 +315,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 
 			<div class="section-title">Internal Tools</div>
 			<div class="grid">
-				<a href={`https://dashboard.${baseDomain}`} class="card" target="_blank" data-container="main-nginx">
+				<a href={`https://analytics.${baseDomain}`} class="card" target="_blank" data-container="main-nginx">
 					<div class="card-header">
 						<h2 class="card-title">GoAccess</h2>
 						<div class="status-dot" data-dot-for="main-nginx"></div>
@@ -330,7 +330,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						</div>
 					</div>
 				</a>
-				<a href={`https://mongodb.${baseDomain}`} class="card" target="_blank" data-container="mongo-express">
+				<a href={`https://mongo.${baseDomain}`} class="card" target="_blank" data-container="mongo-express">
 					<div class="card-header">
 						<h2 class="card-title">MongoDB Express</h2>
 						<div class="status-dot" data-dot-for="mongo-express"></div>
@@ -360,7 +360,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						</div>
 					</div>
 				</a>
-				<a href={`https://database.${baseDomain}`} class="card" target="_blank" data-container="phpmyadmin">
+				<a href={`https://db.${baseDomain}`} class="card" target="_blank" data-container="phpmyadmin">
 					<div class="card-header">
 						<h2 class="card-title">phpMyAdmin</h2>
 						<div class="status-dot" data-dot-for="phpmyadmin"></div>
@@ -411,10 +411,9 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 		<script>
 			async function fetchVitals() {
 				try {
-					// Use prod backend for local dev, or relative path if deployed behind NGINX
 					const apiUrl = window.location.hostname === 'localhost' 
-						? 'https://fahmiefendy.dev/api/vitals' 
-						: '/api/vitals';
+						? 'http://localhost:3002/vitals' 
+						: 'https://api-dashboard.fahmiefendy.dev/vitals';
 					
 					const res = await fetch(apiUrl);
 					const data = await res.json();
@@ -432,8 +431,8 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 			async function fetchDockerStats() {
 				try {
 					const apiUrl = window.location.hostname === 'localhost' 
-						? 'https://fahmiefendy.dev/api/docker' 
-						: '/api/docker';
+						? 'http://localhost:3002/docker' 
+						: 'https://api-dashboard.fahmiefendy.dev/docker';
 					
 					const res = await fetch(apiUrl);
 					const data = await res.json();
