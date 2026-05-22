@@ -32,8 +32,17 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 			h1 {
 				font-size: 1.5rem;
 				font-weight: 600;
-				margin-bottom: 2rem;
+				margin-top: 0;
+				margin-bottom: 1.5rem;
 				letter-spacing: -0.02em;
+			}
+			.vitals-toggle-wrapper {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				font-size: 0.85rem;
+				color: var(--text-muted);
+				margin-bottom: 1.5rem;
 			}
 			.section-title {
 				font-size: 0.75rem;
@@ -104,7 +113,6 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				display: flex;
 				gap: 20px;
 				margin-bottom: 2rem;
-				margin-top: -10px;
 				font-size: 0.85rem;
 				color: var(--text-muted);
 				background-color: var(--card-bg);
@@ -112,6 +120,36 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				border-radius: 6px;
 				border: 1px solid var(--border-color);
 				flex-wrap: wrap;
+				align-items: center;
+				transition: all 0.3s ease;
+			}
+			.vitals-bar.show-charts {
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				gap: 16px;
+				align-items: stretch;
+				padding: 16px;
+			}
+			.vital {
+				display: flex;
+				align-items: center;
+				gap: 6px;
+				transition: all 0.3s ease;
+				width: auto;
+				box-sizing: border-box;
+			}
+			.vitals-bar.show-charts .vital {
+				flex-direction: column;
+				align-items: flex-start;
+				gap: 8px;
+				background-color: rgba(255, 255, 255, 0.02);
+				border: 1px solid var(--border-color);
+				border-radius: 6px;
+				padding: 16px;
+				width: 100%;
+			}
+			.vital div {
+				white-space: nowrap;
 			}
 			.vital span {
 				color: var(--text-main);
@@ -119,11 +157,59 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				font-size: 0.9rem;
 				font-weight: 500;
 			}
+			.sparkline {
+				display: inline-block;
+				vertical-align: middle;
+			}
+			.sparkline.loading {
+				background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 75%);
+				background-size: 200% 100%;
+				animation: shimmer 1.5s infinite linear;
+				border-radius: 4px;
+			}
+			@keyframes shimmer {
+				0% {
+					background-position: 200% 0;
+				}
+				100% {
+					background-position: -200% 0;
+				}
+			}
+			.vitals-bar .sparkline {
+				width: 48px;
+				height: 16px;
+				display: none; /* Hidden by default */
+			}
+			.vitals-bar.show-charts .sparkline {
+				display: block;
+				width: 100%;
+				height: 40px;
+				margin-top: 8px;
+			}
+			.disk-bar-container {
+				width: 100%;
+				height: 6px;
+				background-color: rgba(255, 255, 255, 0.1);
+				border-radius: 3px;
+				overflow: hidden;
+				display: none;
+				margin-top: 25px;
+			}
+			.vitals-bar.show-charts .disk-bar-container {
+				display: block;
+			}
+			.disk-bar-fill {
+				height: 100%;
+				width: 0%;
+				background-color: #a855f7;
+				border-radius: 3px;
+				transition: width 0.3s ease;
+			}
 			
 			.toggle-container {
 				display: flex;
 				align-items: center;
-				gap: 10px;
+				gap: 24px;
 				margin-bottom: 2rem;
 				font-size: 0.85rem;
 				color: var(--text-muted);
@@ -185,7 +271,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				gap: 10px;
 			}
 			.card-stats.visible {
-				max-height: 150px;
+				max-height: 200px;
 				opacity: 1;
 				margin-top: 15px;
 				padding-top: 15px;
@@ -194,13 +280,23 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 			.stats-row {
 				display: flex;
 				justify-content: space-between;
-				text-align: center;
 				width: 100%;
+				align-items: flex-start;
+				gap: 12px;
 			}
 			.card-stats-col {
 				display: flex;
 				flex-direction: column;
 				gap: 4px;
+				align-items: flex-start;
+				flex: 1;
+				min-width: 0;
+			}
+			.card-stats-col .sparkline {
+				width: 100%;
+				max-width: 80px;
+				height: 18px;
+				margin-top: 2px;
 			}
 			.card-stats-label {
 				font-size: 0.65rem;
@@ -222,7 +318,18 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				}
 				h1 {
 					font-size: 1.3rem;
-					margin-bottom: 1.5rem;
+					margin-bottom: 1rem;
+				}
+				.vitals-bar.show-charts {
+					grid-template-columns: repeat(2, 1fr);
+					gap: 12px;
+					padding: 12px;
+				}
+				.vitals-bar.show-charts .vital {
+					padding: 12px;
+				}
+				.disk-bar-container {
+					margin-top: 25px;
 				}
 				.section-title {
 					margin-top: 2rem;
@@ -234,19 +341,41 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 		<div class="container">
 			<h1>fahmi homeserver.</h1>
 
+			<div class="vitals-toggle-wrapper">
+				<label class="toggle-switch">
+					<input type="checkbox" id="vitals-toggle">
+					<span class="slider"></span>
+				</label>
+				<span>Show Vitals Charts</span>
+			</div>
+
 			<div class="vitals-bar" id="vitals-bar">
-				<div class="vital">CPU: <span id="cpu-load">...</span>%</div>
-				<div class="vital">RAM: <span id="ram-used">...</span> / <span id="ram-total">...</span> GB</div>
-				<div class="vital">DISK: <span id="disk-usage">...</span></div>
-				<div class="vital">TEMP: <span id="temp">...</span></div>
+				<div class="vital">
+					<div>CPU: <span id="cpu-load">...</span>%</div>
+					<svg class="sparkline" id="cpu-sparkline" viewBox="0 0 100 24" preserveAspectRatio="none"></svg>
+				</div>
+				<div class="vital">
+					<div>RAM <span id="ram-used">...</span> / <span id="ram-total">...</span> GB</div>
+					<svg class="sparkline" id="ram-sparkline" viewBox="0 0 100 24" preserveAspectRatio="none"></svg>
+				</div>
+				<div class="vital">
+					<div>DISK: <span id="disk-usage">...</span></div>
+					<div class="disk-bar-container"><div class="disk-bar-fill" id="disk-bar-fill"></div></div>
+				</div>
+				<div class="vital">
+					<div>TEMP: <span id="temp">...</span></div>
+					<svg class="sparkline" id="temp-sparkline" viewBox="0 0 100 24" preserveAspectRatio="none"></svg>
+				</div>
 			</div>
 			
 			<div class="toggle-container">
-				<label class="toggle-switch">
-					<input type="checkbox" id="stats-toggle">
-					<span class="slider"></span>
-				</label>
-				<span>Show Container Stats</span>
+				<div style="display: flex; align-items: center; gap: 8px;">
+					<label class="toggle-switch">
+						<input type="checkbox" id="stats-toggle">
+						<span class="slider"></span>
+					</label>
+					<span>Show Container Stats</span>
+				</div>
 			</div>
 
 			<div class="section-title">Public Apps</div>
@@ -268,16 +397,16 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					<p class="card-desc">System dashboard and analytics gateway</p>
 					<div class="card-stats">
 						<div class="stats-row" data-container="fe-homeserver">
-							<div class="card-stats-col"><span class="card-stats-label">FE CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">FE CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 						</div>
 						<div class="stats-row" data-container="be-homeserver">
-							<div class="card-stats-col"><span class="card-stats-label">BE CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">BE CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 						</div>
 					</div>
 				</a>
@@ -298,16 +427,16 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					<p class="card-desc">Your personal AI sommelier and wine catalog</p>
 					<div class="card-stats">
 						<div class="stats-row" data-container="twc-fe">
-							<div class="card-stats-col"><span class="card-stats-label">FE CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">FE CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 						</div>
 						<div class="stats-row" data-container="twc-be">
-							<div class="card-stats-col"><span class="card-stats-label">BE CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">BE CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 						</div>
 					</div>
 				</a>
@@ -328,16 +457,16 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					<p class="card-desc">Location tracking and maps</p>
 					<div class="card-stats">
 						<div class="stats-row" data-container="yp-fe">
-							<div class="card-stats-col"><span class="card-stats-label">FE CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">FE CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 						</div>
 						<div class="stats-row" data-container="yp-be">
-							<div class="card-stats-col"><span class="card-stats-label">BE CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">BE CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 						</div>
 					</div>
 				</a>
@@ -353,10 +482,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					<p class="card-desc">NGINX Server Analytics</p>
 					<div class="card-stats">
 						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 						</div>
 					</div>
 				</a>
@@ -368,10 +497,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					<p class="card-desc">MongoDB Web GUI</p>
 					<div class="card-stats">
 						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 						</div>
 					</div>
 				</a>
@@ -383,10 +512,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					<p class="card-desc">Image Manager</p>
 					<div class="card-stats">
 						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 						</div>
 					</div>
 				</a>
@@ -398,10 +527,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					<p class="card-desc">MySQL Database Admin</p>
 					<div class="card-stats">
 						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 						</div>
 					</div>
 				</a>
@@ -413,10 +542,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					<p class="card-desc">Docker Container Management</p>
 					<div class="card-stats">
 						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 						</div>
 					</div>
 				</a>
@@ -428,10 +557,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					<p class="card-desc">Service monitoring and health</p>
 					<div class="card-stats">
 						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 						</div>
 					</div>
 				</a>
@@ -447,10 +576,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					<p class="card-desc">Reverse proxy and gateway router</p>
 					<div class="card-stats">
 						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 						</div>
 					</div>
 				</div>
@@ -462,10 +591,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					<p class="card-desc">Relational database for host apps</p>
 					<div class="card-stats">
 						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 						</div>
 					</div>
 				</div>
@@ -477,10 +606,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					<p class="card-desc">Document database for host apps</p>
 					<div class="card-stats">
 						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 						</div>
 					</div>
 				</div>
@@ -492,10 +621,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					<p class="card-desc">Automatic image updater</p>
 					<div class="card-stats">
 						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU</span><span class="stat-cpu card-stats-val">--%</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span></div>
-							<div class="card-stats-col" style="text-align: right;"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 						</div>
 					</div>
 				</div>
@@ -503,6 +632,56 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 		</div>
 
 		<script>
+			// Add loading class to all sparklines initially
+			document.querySelectorAll('.sparkline').forEach(el => el.classList.add('loading'));
+
+			// Rolling telemetry history state
+			const history = {
+				server: {
+					cpu: [],
+					ram: [],
+					temp: []
+				},
+				containers: {} // keyed by lowercase container name, e.g. "fe-homeserver": { cpu: [], mem: [] }
+			};
+
+			// Render inline SVG sparkline helper
+			function updateSparkline(svgElement, values, color = '#22c55e') {
+				if (!svgElement || !values || values.length < 2) return;
+				
+				svgElement.classList.remove('loading');
+				
+				let min = Math.min(...values);
+				let max = Math.max(...values);
+				if (max - min < 1) {
+					max = min + 1; // Ensure some range to avoid division by zero or flat scale
+				}
+				const range = max - min;
+				
+				const points = values.map((val, index) => {
+					const x = (index / (values.length - 1)) * 100;
+					const y = 22 - ((val - min) / range) * 20; // 2px margin top/bottom inside 24px height
+					return { x, y };
+				});
+				
+				const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
+				const fillPath = `${linePath} L 100 24 L 0 24 Z`;
+				
+				// Generate unique ID for linearGradient to avoid conflicts
+				const gradId = 'grad-' + Math.random().toString(36).substr(2, 9);
+				
+				svgElement.innerHTML = `
+					<defs>
+						<linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
+							<stop offset="0%" stop-color="${color}" stop-opacity="0.15"/>
+							<stop offset="100%" stop-color="${color}" stop-opacity="0.0"/>
+						</linearGradient>
+					</defs>
+					<path d="${fillPath}" fill="url(#${gradId})"></path>
+					<path d="${linePath}" fill="none" stroke="${color}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path>
+				`;
+			}
+
 			async function fetchVitals() {
 				try {
 					const apiUrl = import.meta.env.PUBLIC_API_BASE_URL + '/vitals';
@@ -515,6 +694,39 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					document.getElementById('ram-total').textContent = data.ramTotal;
 					document.getElementById('disk-usage').textContent = data.disk;
 					document.getElementById('temp').textContent = data.temp;
+
+					// Update disk progress bar
+					const diskPerc = parseInt(data.disk);
+					const diskBarFill = document.getElementById('disk-bar-fill');
+					if (!isNaN(diskPerc) && diskBarFill) {
+						diskBarFill.style.width = diskPerc + '%';
+					}
+
+					// Push CPU vitals
+					const cpuVal = parseFloat(data.cpuLoad);
+					if (!isNaN(cpuVal)) {
+						history.server.cpu.push(cpuVal);
+						if (history.server.cpu.length > 12) history.server.cpu.shift();
+						updateSparkline(document.getElementById('cpu-sparkline'), history.server.cpu, '#22c55e');
+					}
+
+					// Push RAM vitals
+					const ramUsedVal = parseFloat(data.ramUsed);
+					const ramTotalVal = parseFloat(data.ramTotal);
+					if (!isNaN(ramUsedVal) && !isNaN(ramTotalVal) && ramTotalVal > 0) {
+						const ramPerc = (ramUsedVal / ramTotalVal) * 100;
+						history.server.ram.push(ramPerc);
+						if (history.server.ram.length > 12) history.server.ram.shift();
+						updateSparkline(document.getElementById('ram-sparkline'), history.server.ram, '#3b82f6');
+					}
+
+					// Push Temp vitals
+					const tempVal = parseFloat(data.temp);
+					if (!isNaN(tempVal)) {
+						history.server.temp.push(tempVal);
+						if (history.server.temp.length > 12) history.server.temp.shift();
+						updateSparkline(document.getElementById('temp-sparkline'), history.server.temp, '#f97316');
+					}
 				} catch (err) {
 					console.error('Failed to fetch vitals', err);
 				}
@@ -542,6 +754,29 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 							if(node.querySelector('.stat-mem')) node.querySelector('.stat-mem').textContent = stat.MemUsage.split(' / ')[0];
 							if(node.querySelector('.stat-mem-perc')) node.querySelector('.stat-mem-perc').textContent = stat.MemPerc;
 							if(node.querySelector('.stat-uptime')) node.querySelector('.stat-uptime').textContent = stat.Status;
+
+							// Update container sparkline history
+							const cpuVal = parseFloat(stat.CPUPerc);
+							const memVal = parseFloat(stat.MemPerc);
+							const cName = stat.Name.toLowerCase();
+							
+							if (!history.containers[cName]) {
+								history.containers[cName] = { cpu: [], mem: [] };
+							}
+							
+							if (!isNaN(cpuVal)) {
+								history.containers[cName].cpu.push(cpuVal);
+								if (history.containers[cName].cpu.length > 12) history.containers[cName].cpu.shift();
+								const cpuSvg = node.querySelector('.container-sparkline-cpu');
+								if (cpuSvg) updateSparkline(cpuSvg, history.containers[cName].cpu, '#22c55e');
+							}
+							
+							if (!isNaN(memVal)) {
+								history.containers[cName].mem.push(memVal);
+								if (history.containers[cName].mem.length > 12) history.containers[cName].mem.shift();
+								const memSvg = node.querySelector('.container-sparkline-mem');
+								if (memSvg) updateSparkline(memSvg, history.containers[cName].mem, '#3b82f6');
+							}
 						}
 					});
 					
@@ -562,7 +797,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				}
 			}
 			
-			// Handle Toggle
+			// Handle Toggles
 			const toggle = document.getElementById('stats-toggle');
 			toggle.addEventListener('change', (e) => {
 				const statsBlocks = document.querySelectorAll('.card-stats');
@@ -573,6 +808,16 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						block.classList.remove('visible');
 					}
 				});
+			});
+
+			const vitalsToggle = document.getElementById('vitals-toggle');
+			vitalsToggle.addEventListener('change', (e) => {
+				const vitalsBar = document.getElementById('vitals-bar');
+				if (e.target.checked) {
+					vitalsBar.classList.add('show-charts');
+				} else {
+					vitalsBar.classList.remove('show-charts');
+				}
 			});
 			
 			// Fetch immediately and then every 5 seconds
